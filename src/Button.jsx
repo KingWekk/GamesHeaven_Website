@@ -1,5 +1,7 @@
+import { useState } from "react";
 
 function Button(){
+    const [test, setTest] = useState(null) 
 
     /* inline styling */
     const styles = {
@@ -29,10 +31,27 @@ function Button(){
     // the (event) parameter was shorten to just (e)
     // to get the event: const handleClick = (e) => console.log(e);
     // textContent is the event we chose, we wil change it:
-    const handleClick = (e) => e.target.textContent = "OUCH!";
+    const handleClick2 = (e) => e.target.textContent = "OUCH!";
+
+    const handleClick = async () => {
+        const response = await fetch("http://localhost:3000/users", { 
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        });
+        const movies = await response.json() 
+
+        setTest(movies)     
+    }
+
     //we can either use the onClick to a single click event, or the onDoubleClick to a double click event
     return(
-        <button style={styles} onDoubleClick={(e) => handleClick(e)}>Click me</button>
+        <>
+            <button style={styles} onDoubleClick={(e) => handleClick(e)}>Click me</button>
+
+            <div><pre>{JSON.stringify(test)}</pre></div>;
+        </>
     )
 }
 
